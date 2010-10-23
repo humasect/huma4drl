@@ -52,7 +52,7 @@
             ))))
 
 (defun output-index ()
-  (output-file "index.html" #'index-html))
+  (output-file "gamelike.html" #'index-html))
 
 ;; (defun serve ()
 ;;   (hunchentoot:define-easy-handler (serve-game :uri "/") ()
