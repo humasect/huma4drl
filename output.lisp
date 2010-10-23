@@ -8,7 +8,7 @@
 (in-package "LGamelike")
 
 (defun output-file (name fun)
-  (let* ((fname name)
+  (let* ((fname (concatenate 'string "../huma4drl_gh-pages/" name))
          (stream (open fname :direction :output :if-exists :supersede)))
     (setf *parenscript-stream* nil)
     (funcall fun stream)

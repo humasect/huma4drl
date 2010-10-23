@@ -2,11 +2,6 @@
 (require :parenscript)
 (in-package "LGamelike")
 
-(defvar *tile-width* 24)
-(defvar *tile-height* 30)
-(defvar *map-width* 32)
-(defvar *map-height* 24)
-
 (defun css-tile-position (x y)
   (format nil "left: ~dpx; top: ~dpx;" x y))
 
@@ -29,14 +24,16 @@
                    :content "Gamelike Role Playing Roleplaying RPG Roguelike")
                   (:link :rel "stylesheet" :type "text/css" :href "style.css")
                   (:script :src "jquery-1.4.2.min.js")
-                  (:script :src "functional.min.js")
-                  (:script :src "underscore-min.js")
+                  ;;(:script :src "functional.min.js")
+                  (:script :src "underscore-1.1.0.min.js")
                   (:script :type "text/javascript"
                            (str (ps* `(progn
                                         (var hehe 4)))))
                   (:script :src "main.js"))
            (:body
             (:h2 "humasect 4drl")
+
+            (:div :id "view")
 
             (for-each-tile-xy
              (lambda (x y)
