@@ -2,6 +2,11 @@
 (require :parenscript)
 (in-package "LGamelike")
 
+(defvar *tile-width* 32)
+(defvar *tile-height* 32)
+(defvar *scr-width* 32)
+(defvar *scr-height* 24)
+
 (defun index-html (stream)
   (cl-who:with-html-output (stream nil :indent t)
   ;;(with-html-output-to-string (s)
@@ -19,6 +24,10 @@
                   (:script :src "main.js"))
            (:body
             (:h2 "humasect 4drl")
+
+            (:canvas :id "canvas"
+                     :width (* *tile-width* *screen-width*)
+                     :height (* *tile-height* *screen-height*))
 
             (:div :id "view")))))
 
