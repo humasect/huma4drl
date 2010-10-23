@@ -1,0 +1,32 @@
+html {
+    background: rgb(0, 0, 0);
+    background-image: none;
+    min-height: 100%;
+}
+
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    overflow: hidden;
+    margin: 0px;
+    color: white;
+}
+
+.tile {
+    font-size: 32px;
+    position: absolute;
+    width: 24px;
+    height: 30px;
+    text-align: center;
+
+    vertical-align: middle;
+    margin: 0px;
+}
+
+.floor {
+    background: blue;
+}
+
+.wall {
+    background: green;
+}
