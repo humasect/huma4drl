@@ -13,13 +13,15 @@ body {
 }
 
 .tile {
-    font-size: 32px;
+    font-size: 30px;
     position: absolute;
     width: 24px;
     height: 30px;
     text-align: left;
-    vertical-align: text-top;
-    margin: 0px;
+
+    vertical-align: text-bottom;
+    margin: 0;
+    padding: 0;
 }
 
 .floor {
