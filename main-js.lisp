@@ -7,21 +7,6 @@
 (defvar *map-width* 32)
 (defvar *map-height* 24)
 
-(defmacro for-each-tile (f xmod ymod)
-  `(loop for i from 0 to *map-width*
-      do (loop for j from 0 to *map-height*
-            do (let ((x (+ (* i ,xmod) 64))
-                     (y (+ (* j ,ymod) 64)))
-                 (funcall ,f x y)))))
-
-(defun for-each-tile-xy (f)
-  (let ((xmod (lambda (x) (+ x 64)))
-        (ymod (lambda (y) (+ y 64))))
-    (for-each-tile f *tile-width* *tile-height*)))
-
-(defun for-each-tile-element (f)
-  (for-each-tile f 0 0))
-
 (defmacro main-js ()
   `(progn
      (var *tile-width* ,*tile-width*)
@@ -29,16 +14,35 @@
      (var *map-width* ,*map-width*)
      (var *map-height* ,*map-height*)
 
-     (defun for-each-tile-xy (*fun)
+     (defun for-each-tile (fun)
        (loop for i from 0 to *map-width*
           do (loop for j from 0 to *map-height*
-                do (*fun i j))))
+                do (fun i j))))
+
+     (defun clear-map ()
+       (chain ($ "#view") (html "")))
+
+     (defun tile-id (x y)
+       (concatenate 'string "tile_" x "_" y))
+
+     (defun set-tile (x y type)
+       (let ((c ($ (tile-id x y)))
+             (class (cond ((= type "#") "wall"))))
+         (chain c (html type) (add-class class))))
 
      (defun create-map ()
-       (for-each-tile-xy
+       (for-each-tile
         (lambda (x y)
-          (let ((c ($"<div/>")))
-            (chain c (attr "id" (concatenate 'string "tile_" x "_" y)))
+          (let ((c ($"<div/>"))
+                (left (+ (* x *tile-width*) 64))
+                (top (+ (* y *tile-height*) 64)))
+            (chain c
+                   (attr "id" (tile-id x y))
+                   (add-class "tile")
+                   (css (create :left left
+                                :top top
+                                :background-color "green"))
+                   (html "#"))
             (chain ($ "#view") (append c))))))
 
      (chain ($ document) (ready create-map))))
