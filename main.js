@@ -1,34 +1,50 @@
-var TILEWIDTH = 24;
-var TILEHEIGHT = 30;
-var MAPWIDTH = 32;
-var MAPHEIGHT = 24;
-function forEachTile(fun) {
-    for (var i = 0; i <= MAPWIDTH; i += 1) {
-        for (var j = 0; j <= MAPHEIGHT; j += 1) {
-            fun(i, j);
-        };
-        null;
+var TILEWIDTH = 32;
+var TILEHEIGHT = 32;
+var SCRWIDTH = 32;
+var SCRHEIGHT = 24;
+var CTX = null;
+function clog(msg) {
+    var args = [];
+    for (var i9 = 0; i9 < arguments.length - 1; i9 += 1) {
+        args[i9] = arguments[i9 + 1];
     };
-    return null;
+    return console.log(msg + args);
 };
-function clearMap() {
-    return $('#view').html('');
+function modX(x) {
+    return x * TILEWIDTH;
 };
-function tileId(x, y) {
-    return 'tile_' + x + '_' + y;
+function modY(y) {
+    return y * TILEHEIGHT;
 };
-function setTile(x, y, type) {
-    var c = $(tileId(x, y));
-    var class = eq(type, '#') ? 'wall' : null;
-    return c.html(type).addClass(class);
+function fillStyle(style) {
+    return CTX.fillStyle = style;
 };
-function createMap() {
-    return forEachTile(function (x, y) {
-        var c = $('<div/>');
-        var left = x * TILEWIDTH + 64;
-        var top = y * TILEHEIGHT + 64;
-        c.attr('id', tileId(x, y)).addClass('tile').css({ 'left' : left, 'top' : top, 'background-color' : 'green' }).html('#');
-        return $('#view').append(c);
-    });
+function fillRect(x, y, w, h) {
+    return CTX.fillRect(modX(x), modY(y), modX(w), modY(h));
 };
-$(document).ready(createMap);
+function clear() {
+    fillStyle('rgb(0,0,0)');
+    return fillRect(0, 0, SCRWIDTH, SCRHEIGHT);
+};
+function redraw() {
+    return clear();
+};
+function startGame() {
+    CTX = $('#canvas')[0].getContext('2d');
+    return redraw();
+};
+function gameTurn(angle) {
+    clog('take a turn');
+    return redraw();
+};
+$(document).ready(startGame);
+document.onkeydown = function (e) {
+    var angleMap = { 'd' : 270, 'b' : 180, 'f' : 90, 'h' : 0, 'g' : 315, 'i' : 45, 'c' : 135, 'a' : 225 };
+    var s = String.fromCharCode(e.which || e.keyCode);
+    var a = angleMap[s];
+    if (undefined == a) {
+        return clog('unknown key: ', s);
+    } else {
+        return gameTurn(a);
+    };
+};
