@@ -1,60 +1,40 @@
 (in-package :gamelike)
 
-(defmacro main-js-query ()
-  `(progn
-     (var *tile-width* 24)
-     (var *tile-height* 30)
-     (var *map-width* 32)
-     (var *map-height* 24)
+(defpsmacro defproto (class name &body body)
+  `(setf (@ ,class prototype ,name) ,@body))
 
-     (defun for-each-tile (fun)
-       (loop for i from 0 to *map-width*
-          do (loop for j from 0 to *map-height*
-                do (fun i j))))
+(defpsmacro setprop (object key value)
+  `(setf (@ ,object ,key) ,value))
 
-     (defun clear-map () (chain ($ "#view") (html "")))
-     (defun tile-id (x y) (concatenate 'string "tile_" x "_" y))
+(defpsmacro setthis (key value)
+  `(setf (@ this ,key) ,value))
 
-     (defun set-tile (x y type)
-       (let ((c ($ (tile-id x y)))
-             (class (cond ((= type "#") "wall"))))
-         (chain c (html type) (add-class class))))
+;; (defpsmacro modprop (object key setter)
+;;   `(let ((value (funcall setter (@ object key))))
+;;      (setf (@ ,object ,key) ,value)))
 
-     (defun create-map ()
-       (for-each-tile
-        (lambda (x y)
-          (let ((c ($"<div/>"))
-                (left (+ (* x *tile-width*) 64))
-                (top (+ (* y *tile-height*) 64)))
-            (chain c
-                   (attr "id" (tile-id x y))
-                   (add-class "tile")
-                   (css (create :left left
-                                :top top
-                                :background-color "green"))
-                   (html "#"))
-            (chain ($ "#view") (append c))))))
+(defpsmacro for-each (x f)
+  `(let ((__array ,x))
+     (for-in (i __array) (,f (getprop __array i)))))
 
-     (chain ($ document) (ready create-map))))
+(defpsmacro clog (fmt)
+  `((@ console log) ,fmt))
+
+(defpsmacro clogf (fmt &rest args)
+  `((@ console log) (concatenate 'string ,fmt ,@args)))
 
 (defmacro main-js ()
   `(progn
      (var *tile-size* (size-make ,*tile-width* ,*tile-height*))
      (var *screen-size* (size-make ,*scr-width* ,*scr-height*))
      (var *ctx* null)
+     (var *screen* null)
      (var *world* null)
 
      (var *tile-width* ,*tile-width*)
      (var *tile-height* ,*tile-height*)
      (var *scr-width* ,*scr-width*)
      (var *scr-height* ,*scr-height*)
-
-     (defun clog (msg &rest args)
-       ((@ console log) (concatenate 'string msg args)))
-
-     ;; (defun fill-tile (style x y)
-     ;;   (let ((x)))
-     ;;   ((@ *ctx* fillRect)))
 
      (defun mod-x (x) (* x *tile-width*))
      (defun mod-y (y) (* y *tile-height*))
@@ -75,17 +55,25 @@
 
      (defun redraw ()
        (clear)
-       (layer-render *world*))
+       (layer-render *screen*)
+       (for-each (@ *world* actors) actor-render))
 
      (defun start-game ()
        (setf *ctx* (chain (@ ($ "#canvas") 0) (get-context "2d")))
-       (setf *world* (*layer "world" 0 0 *scr-width* *scr-height*))
-       (layer-add-sublayer *world* (*layer "test" 100 100 100 100))
+       (setf *screen* (*layer "world" 0 0 *scr-width* *scr-height*))
+       (layer-add-sublayer *screen* (*layer "test" 10 10 10 10))
+       ;;(deflayer :name "aoeuaoeu")
+       (clog *screen*)
+
+       (var player (*actor "Player" "@" 32 32))
+       (var monster (*actor "Monster" "M" 100 80))
+       (setf *world* (create actors (array player monster)))
        (clog *world*)
+
        (redraw))
 
      (defun game-turn (angle)
-       (clog "take a turn, angle: " angle)
+       (clogf "take a turn, angle: " angle)
        (redraw))
 
      (chain ($ document) (ready start-game))
@@ -105,7 +93,7 @@
                         (or (@ e which) (@ e key-code))))
                     (a (getprop angle-map s)))
                (if (= undefined a)
-                   (clog "unknown key: " s)
+                   (clogf "unknown key: " s)
                    (game-turn a)))))
      ))
 

@@ -3,6 +3,8 @@
 (defmacro apply-point (p f)
   `(,f (@ ,p x) (@ ,p y)))
 
+(defpsmacro point-x (p) `(@ ,p x))
+(defpsmacro point-y (p) `(@ ,p y))
 
 (defmacro geom-js ()
   `(progn

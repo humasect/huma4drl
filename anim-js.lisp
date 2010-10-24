@@ -1,17 +1,26 @@
 (in-package :gamelike)
 
-(defpsmacro defproto (class name &body body)
-  `(setf (@ ,class prototype ,name) ,@body))
 
-(defpsmacro setprop (object key value)
-  `(setf (@ ,object ,key) ,value))
+(defpsmacro deflayer (&key (name "")
+                           (sublayers nil)
+                           (fill-style "blue")
+                           (stroke-style "white")
+                           (bounds nil))
+  `(create superlayer null
+           name (if (,name) ,name null)
+           sublayers (if (,sublayers) ,sublayers null)
+           bounds (if (,bounds) ,bounds (rect-make 0 0 0 0))
+           fill-style ,fill-style
+           stroke-style ,stroke-style))
 
-(defpsmacro setthis (key value)
-  `(setf (@ this ,key) ,value))
+(defpsmacro cg-fill-style (style)
+  `(setf (@ *ctx* fill-style) ,style))
 
-;; (defpsmacro modprop (object key setter)
-;;   `(let ((value (funcall setter (@ object key))))
-;;      (setf (@ ,object ,key) ,value)))
+(defpsmacro cg-stroke-style (style)
+  `(setf (@ *ctx* stroke-style) ,style))
+
+(defpsmacro cg-font (size name)
+  `(setf (@ *ctx* font) (concatenate 'string ,size "px " ,name)))
 
 (defmacro anim-js ()
   `(progn
@@ -30,7 +39,6 @@
      (defun layer-render (l)
        (with-slots (fill-style stroke-style bounds sublayers) l
          (progn
-           (clog "aoeuaoeuaoeu" bounds)
            (setprop *ctx* fill-style fill-style)
            (setprop *ctx* stroke-style stroke-style)
            (fill-rect bounds)

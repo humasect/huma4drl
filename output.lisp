@@ -35,5 +35,7 @@
   (output-index)
   (output-main)
   (output-geom)
-  (output-anim))
+  (output-anim)
+  (output-actor)
+  (output-map))
 

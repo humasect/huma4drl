@@ -19,6 +19,7 @@
                   (:script :src "underscore-1.1.0.min.js")
                   (:script :src "geom.js")
                   (:script :src "anim.js")
+                  (:script :src "actor.js")
                   (:script :src "main.js"))
            (:body
             (:h2 "humasect 4drl")
