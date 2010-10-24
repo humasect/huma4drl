@@ -1,15 +1,12 @@
+var TILESIZE = sizeMake(32, 32);
+var SCREENSIZE = sizeMake(32, 24);
+var CTX = null;
+var SCREEN = null;
+var WORLD = null;
 var TILEWIDTH = 32;
 var TILEHEIGHT = 32;
 var SCRWIDTH = 32;
 var SCRHEIGHT = 24;
-var CTX = null;
-function clog(msg) {
-    var args = [];
-    for (var i9 = 0; i9 < arguments.length - 1; i9 += 1) {
-        args[i9] = arguments[i9 + 1];
-    };
-    return console.log(msg + args);
-};
 function modX(x) {
     return x * TILEWIDTH;
 };
@@ -19,22 +16,38 @@ function modY(y) {
 function fillStyle(style) {
     return CTX.fillStyle = style;
 };
-function fillRect(x, y, w, h) {
-    return CTX.fillRect(modX(x), modY(y), modX(w), modY(h));
+function fillRect(r) {
+    var x71 = r.origin.x;
+    var y72 = r.origin.y;
+    var w = r.size.width;
+    var h = r.size.height;
+    return CTX.fillRect(modX(x71), modY(y72), modX(w), modY(h));
 };
 function clear() {
     fillStyle('rgb(0,0,0)');
-    return fillRect(0, 0, SCRWIDTH, SCRHEIGHT);
+    return fillRect(rectMake(0, 0, SCRWIDTH, SCRHEIGHT));
 };
 function redraw() {
-    return clear();
+    clear();
+    layerRender(SCREEN);
+    var __array = WORLD.actors;
+    for (var i in __array) {
+        actorRender(__array[i]);
+    };
 };
 function startGame() {
     CTX = $('#canvas')[0].getContext('2d');
+    SCREEN = Layer('world', 0, 0, SCRWIDTH, SCRHEIGHT);
+    layerAddSublayer(SCREEN, Layer('test', 10, 10, 10, 10));
+    console.log(SCREEN);
+    var player = Actor('Player', '@', 32, 32);
+    var monster = Actor('Monster', 'M', 100, 80);
+    WORLD = { actors : [player, monster] };
+    console.log(WORLD);
     return redraw();
 };
 function gameTurn(angle) {
-    clog('take a turn');
+    console.log('take a turn, angle: ' + angle);
     return redraw();
 };
 $(document).ready(startGame);
@@ -43,7 +56,7 @@ document.onkeydown = function (e) {
     var s = String.fromCharCode(e.which || e.keyCode);
     var a = angleMap[s];
     if (undefined == a) {
-        return clog('unknown key: ', s);
+        return console.log('unknown key: ' + s);
     } else {
         return gameTurn(a);
     };

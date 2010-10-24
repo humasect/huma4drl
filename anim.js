@@ -1,22 +1,15 @@
-point = { makef : function (x, y, fun) {
-    return { x : fun(x), y : fun(y) };
-}, mod : function (p, fun) {
-    return { x : fun(p.x), y : fun(p.y) };
-}, modWith : function (a, b, fun) {
-    return { x : fun(a.x, b.x), y : fun(a.y, b.y) };
-}, dot : function (a, b) {
-    return a.x * b.x + a.y * b.y;
-}, magnitude : function (p) {
-    return Math.sqrt(point.dot(p, p));
-}, divide : function (a, s) {
-    return { x : a.x / s, y : a.y / s };
-}, add : function (a, b) {
-    return { x : a.x + b.x, y : a.y + b.y };
-}, subtract : function (a, b) {
-    return { x : a.x - b.x, y : a.y - b.y };
-}, scale : function (p, s) {
-    return { x : p.x * s, y : p.y * s };
-} };
-function newLayer(n) {
-    return { name : n, superlayer : null, sublayers : [], origin : [0, 0], size : [0, 0] };
+function Layer(n, x, y, w, h) {
+    return { name : n, superlayer : null, sublayers : [], bounds : rectMake(x, y, w, h), fillStyle : 'blue', strokeStyle : 'white' };
+};
+function layerAddSublayer(l, s) {
+    return l.sublayers.concat([s]);
+};
+function layerRender(l) {
+    console.log(l.bounds);
+    CTX.fillStyle = l.fillStyle;
+    CTX.strokeStyle = l.strokeStyle;
+    fillRect(l.bounds);
+    for (var s in l.sublayers) {
+        layerRender(s);
+    };
 };

@@ -45,6 +45,24 @@ function pointAngleBetween(first, second) {
     var diff = pointSubtract(second, first);
     return atan2(diff.x, diff.y);
 };
+function sizeMake(w, h) {
+    return { width : w, height : h };
+};
+function rectMake(x, y, w, h) {
+    return { origin : pointMake(x, y), size : sizeMake(w, h) };
+};
+function rectMinX(r) {
+    return r.origin.x;
+};
+function rectMinY(r) {
+    return r.origin.y;
+};
+function rectMaxX(r) {
+    return r.origin.x + size.width;
+};
+function rectMaxY(r) {
+    return r.origin.y + size.height;
+};
 function randomSigned() {
     return Math.random() * 2 - 1;
 };
