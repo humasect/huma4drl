@@ -19,9 +19,21 @@
     (close stream)
     (format t "done writing ~s~%" fname)))
 
-(load "gamelike-html")
-(load "main-js")
+;;(load "gamelike-html")
+;;(load "main-js")
+
+(defun output-js (name js)
+  (output-file (concatenate 'string name ".js")
+               (lambda (stream)
+                 (setf *parenscript-stream* stream)
+                 (parenscript:ps* (macroexpand-1 js)))))
+
+;; (defmacro define-js (name &rest body)
+;;   `(output-js ,@name ,@body))
 
 (defun output-all ()
   (output-index)
-  (output-main))
+  (output-main)
+  (output-geom)
+  (output-anim))
+

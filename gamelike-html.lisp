@@ -13,12 +13,12 @@
                   (:meta :name "keywords"
                    :content "Gamelike Role Playing Roleplaying RPG Roguelike")
                   (:link :rel "stylesheet" :type "text/css" :href "style.css")
+
                   (:script :src "jquery-1.4.2.min.js")
                   ;;(:script :src "functional.min.js")
                   (:script :src "underscore-1.1.0.min.js")
-                  (:script :type "text/javascript"
-                           (str (parenscript:ps* `(progn (var hehe 4)))))
-                  (:script :src "main.js"))
+                  (:script :src "main.js")
+                  (:script :src "anim.js"))
            (:body
             (:h2 "humasect 4drl")
 

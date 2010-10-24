@@ -98,6 +98,4 @@
      ))
 
 (defun output-main ()
-  (output-file "main.js" (lambda (Stream)
-                           (setf *parenscript-stream* Stream)
-                           (ps* (macroexpand-1 '(main-js))))))
+  (output-js "main" '(main-js)))

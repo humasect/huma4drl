@@ -13,4 +13,5 @@
   :components ((:file "output")
                (:file "gamelike-html")
                (:file "main-js")
+               (:file "geom-js")
                (:file "anim-js")))
