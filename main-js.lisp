@@ -1,6 +1,4 @@
-(require :cl-who)
-(require :parenscript)
-(in-package "LGamelike")
+(in-package :gamelike)
 
 (defmacro main-js-query ()
   `(progn
@@ -63,16 +61,20 @@
      (defun fill-rect (x y w h)
        ((@ *ctx* fill-rect) (mod-x x) (mod-y y) (mod-x w) (mod-y h)))
 
-     (defun redraw ()
-       (fill-style "rgb(255,0,0)")
+     (defun clear ()
+       (fill-style "rgb(0,0,0)")
        (fill-rect 0 0 *scr-width* *scr-height*))
 
-     (Defun start-game ()
+     (defun redraw ()
+       (clear))
+
+     (defun start-game ()
        (setf *ctx* (chain (@ ($ "#canvas") 0) (get-context "2d")))
        (redraw))
 
      (defun game-turn (angle)
-       (clog "take a turn"))
+       (clog "take a turn")
+       (redraw))
 
      (chain ($ document) (ready start-game))
      (setf (@ document onkeydown)

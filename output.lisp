@@ -2,10 +2,14 @@
 (require :hunchentoot)
 (require :parenscript)
 
-(defpackage "LGamelike"
-  (:use :cl :cl-who :hunchentoot :parenscript))
+(defpackage :gamelike
+  (:documentation "humasect 4-day roguelike")
+  (:nicknames :gl)
+  (:use :cl :cl-who :parenscript ; :hunchentoot
+        )
+  (:export *scr-width*))
 
-(in-package "LGamelike")
+(in-package :gamelike)
 
 (defun output-file (name fun)
   (let* ((fname (concatenate 'string "../huma4drl_gh-pages/" name))

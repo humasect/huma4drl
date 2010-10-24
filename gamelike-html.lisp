@@ -1,6 +1,4 @@
-(require :cl-who)
-(require :parenscript)
-(in-package "LGamelike")
+(in-package :gamelike)
 
 (defvar *tile-width* 32)
 (defvar *tile-height* 32)
@@ -19,15 +17,14 @@
                   ;;(:script :src "functional.min.js")
                   (:script :src "underscore-1.1.0.min.js")
                   (:script :type "text/javascript"
-                           (str (ps* `(progn
-                                        (var hehe 4)))))
+                           (str (parenscript:ps* `(progn (var hehe 4)))))
                   (:script :src "main.js"))
            (:body
             (:h2 "humasect 4drl")
 
             (:canvas :id "canvas"
-                     :width (* *tile-width* *screen-width*)
-                     :height (* *tile-height* *screen-height*))
+                     :width (* *tile-width* *scr-width*)
+                     :height (* *tile-height* *scr-height*))
 
             (:div :id "view")))))
 
