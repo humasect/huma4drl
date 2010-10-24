@@ -22,11 +22,11 @@
 ;;(load "gamelike-html")
 ;;(load "main-js")
 
-(defun output-js (name js)
+(defun output-js (name body)
   (output-file (concatenate 'string name ".js")
                (lambda (stream)
                  (setf *parenscript-stream* stream)
-                 (parenscript:ps* (macroexpand-1 js)))))
+                 (parenscript:ps* (macroexpand-1 body)))))
 
 ;; (defmacro define-js (name &rest body)
 ;;   `(output-js ,@name ,@body))

@@ -1,5 +1,9 @@
 (in-package :gamelike)
 
+(defmacro apply-point (p f)
+  `(,f (@ ,p x) (@ ,p y)))
+
+
 (defmacro geom-js ()
   `(progn
      ;;
@@ -58,6 +62,25 @@
        (let ((diff (point-subtract second first)))
          (atan2 (@ diff x) (@ diff y))))
 
+     ;;
+     ;; size
+     ;;
+     (defun size-make (w h)
+       (create width w height h))
+
+     ;;
+     ;; rect
+     ;;
+     (defun rect-make (x y w h)
+       (create origin (point-make x y) size (size-make w h)))
+     (defun rect-min-x (r)
+       (@ r origin x))
+     (defun rect-min-y (r)
+       (@ r origin y))
+     (defun rect-max-x (r)
+       (+ (@ r origin x) (@ size width)))
+     (defun rect-max-y (r)
+       (+ (@ r origin y) (@ size height)))
      ;;
      ;; random
      ;;

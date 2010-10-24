@@ -1,23 +1,41 @@
 (in-package :gamelike)
 
-(defmacro apply-point (p f)
-  `(,f (@ ,p x) (@ ,p y)))
+(defpsmacro defproto (class name &body body)
+  `(setf (@ ,class prototype ,name) ,@body))
+
+(defpsmacro setprop (object key value)
+  `(setf (@ ,object ,key) ,value))
+
+(defpsmacro setthis (key value)
+  `(setf (@ this ,key) ,value))
+
+;; (defpsmacro modprop (object key setter)
+;;   `(let ((value (funcall setter (@ object key))))
+;;      (setf (@ ,object ,key) ,value)))
 
 (defmacro anim-js ()
   `(progn
-     ;; (setf *layer (lambda (name)
-     ;;                (setf (@ this name) name)
-     ;;                this))
-     ;; (setf (@ *layer prototype ) )
-
-     
-
-     (defun new-layer (n)
+     (defun *layer (n x y w h)
        (create name n
                superlayer null
                sublayers (array)
-               origin (array 0 0)
-               size (array 0 0)))
+               bounds (rect-make x y w h)
+               fill-style "blue"
+               stroke-style "white"))
+
+     (defun layer-add-sublayer (l s)
+       ;; does not check if layer is already present.
+       (append (@ l sublayers) (list s)))
+
+     (defun layer-render (l)
+       (with-slots (fill-style stroke-style bounds sublayers) l
+         (progn
+           (clog "aoeuaoeuaoeu" bounds)
+           (setprop *ctx* fill-style fill-style)
+           (setprop *ctx* stroke-style stroke-style)
+           (fill-rect bounds)
+           (for-in (s sublayers) (layer-render s)))))
+     
      ))
 
 (defun output-anim ()
