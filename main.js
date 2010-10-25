@@ -1,31 +1,13 @@
-var TILESIZE = sizeMake(32, 32);
-var SCREENSIZE = sizeMake(32, 24);
+var TILEWIDTH = 32;
+var TILEHEIGHT = 32;
+var SCREENWIDTH = 32;
+var SCREENHEIGHT = 24;
 var CTX = null;
 var SCREEN = null;
 var WORLD = null;
-var TILEWIDTH = 32;
-var TILEHEIGHT = 32;
-var SCRWIDTH = 32;
-var SCRHEIGHT = 24;
-function modX(x) {
-    return x * TILEWIDTH;
-};
-function modY(y) {
-    return y * TILEHEIGHT;
-};
-function fillStyle(style) {
-    return CTX.fillStyle = style;
-};
-function fillRect(r) {
-    var x105 = r.origin.x;
-    var y106 = r.origin.y;
-    var w = r.size.width;
-    var h = r.size.height;
-    return CTX.fillRect(modX(x105), modY(y106), modX(w), modY(h));
-};
 function clear() {
-    fillStyle('rgb(0,0,0)');
-    return fillRect(rectMake(0, 0, SCRWIDTH, SCRHEIGHT));
+    CTX.fillStyle = 'rgb(0,0,0)';
+    return CTX.fillRect(SCREEN.bounds.origin.x * TILEWIDTH, SCREEN.bounds.origin.y * TILEHEIGHT, SCREEN.bounds.size.width * TILEWIDTH, SCREEN.bounds.size.height * TILEHEIGHT);
 };
 function redraw() {
     clear();
@@ -37,13 +19,9 @@ function redraw() {
 function startGame() {
     CTX = $('#canvas')[0].getContext('2d');
     CTX.font = 32 + 'px ' + 'helvetica';
-    SCREEN = Layer('world', 0, 0, SCRWIDTH, SCRHEIGHT);
-    var left = Layer('test', 5, 10, 5, 5);
-    left.fillStyle = 'red';
-    layerAddSublayer(SCREEN, left);
-    var right = Layer('test', 20, 10, 5, 5);
-    right.fillStyle = 'green';
-    layerAddSublayer(SCREEN, right);
+    SCREEN = { name : 'World', superlayer : null, sublayers : [], bounds : { origin : { x : 0, y : 0 }, size : { width : 32, height : 24 } }, fillStyle : 'blue', strokeStyle : 'white' };
+    layerAddSublayer(SCREEN, { name : 'test-left', superlayer : null, sublayers : [], bounds : { origin : { x : 5, y : 10 }, size : { width : 5, height : 5 } }, fillStyle : 'red', strokeStyle : 'white' });
+    layerAddSublayer(SCREEN, { name : 'test-right', superlayer : null, sublayers : [], bounds : { origin : { x : 20, y : 10 }, size : { width : 5, height : 5 } }, fillStyle : 'green', strokeStyle : 'white' });
     console.log(SCREEN);
     var player = Actor('Player', '@', 2, 2);
     var monster = Actor('Monster', 'M', 10, 10);
@@ -63,7 +41,6 @@ function actorNamed(name) {
     return found;
 };
 function gameTurn(angle) {
-    console.log('take a turn, angle: ' + angle);
     actorMove(actorNamed('Player'), angle);
     return redraw();
 };

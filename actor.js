@@ -8,6 +8,5 @@ function actorRender(a) {
 function actorMove(a, angle) {
     var by = pointRotate({ x : 0, y : -1 }, degToRad(angle));
     var to = pointAdd(a.pos, pointSnap(by, 1));
-    a.pos = to;
-    return console.log('position = ' + to);
+    return a.pos = keepPointInRect(to, SCREEN.bounds);
 };

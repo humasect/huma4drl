@@ -4,9 +4,6 @@ function degToRad(c) {
 function radToDeg(c) {
     return (c * 180.0) / Math.PI;
 };
-function pointMakef(x, y, fun) {
-    return { x : fun(x), y : fun(y) };
-};
 function pointMod(p, fun) {
     return { x : fun(p.x), y : fun(p.y) };
 };
@@ -14,7 +11,7 @@ function pointModWith(p, fun) {
     return { x : fun(a.x, b.x), y : fun(a.y, b.y) };
 };
 function pointDot(a, b) {
-    return a.x * b.x + a.y * b.y;
+    return a.x * b.y + a.y * b.y;
 };
 function pointMagnitude(p) {
     return Math.sqrt(pointDot(p, p));
@@ -51,24 +48,6 @@ function pointAngleBetween(first, second) {
 function pointSnap(p, sz) {
     return { x : Math.round(p.x / sz) * sz, y : Math.round(p.y / sz) * sz };
 };
-function sizeMake(w, h) {
-    return { width : w, height : h };
-};
-function rectMake(x, y, w, h) {
-    return { origin : { x : x, y : y }, size : sizeMake(w, h) };
-};
-function rectMinX(r) {
-    return r.origin.x;
-};
-function rectMinY(r) {
-    return r.origin.y;
-};
-function rectMaxX(r) {
-    return r.origin.x + size.width;
-};
-function rectMaxY(r) {
-    return r.origin.y + size.height;
-};
 function randomSigned() {
     return Math.random() * 2 - 1;
 };
@@ -81,4 +60,7 @@ function randomPointInRect(x, y, w, h) {
 function randomPointInCircle(x, y, radius) {
     var p = pointNormal({ x : randomSigned(), y : randomSigned() });
     return pointAdd(pointScale(p, radius), { x : x, y : y });
+};
+function keepPointInRect(p, r) {
+    return { x : p.x < r.origin.x ? r.origin.x : (p.x > r.origin.x + r.size.width ? r.origin.x + r.size.width : p.x), y : p.y < r.origin.y ? r.origin.y : (p.y > r.origin.y + r.size.height ? r.origin.y + r.size.height : p.y) };
 };
