@@ -17,6 +17,9 @@
   `(let ((__array ,x))
      (for-in (i __array) (,f (getprop __array i)))))
 
+(defpsmacro for-each-actor (f)
+  `(for-in (i (@ *world* actors)) (,f (getprop (@ *world* actors) i))))
+
 (defpsmacro clog (fmt)
   `((@ console log) ,fmt))
 
@@ -56,24 +59,44 @@
      (defun redraw ()
        (clear)
        (layer-render *screen*)
-       (for-each (@ *world* actors) actor-render))
+       (for-each-actor actor-render))
 
      (defun start-game ()
        (setf *ctx* (chain (@ ($ "#canvas") 0) (get-context "2d")))
+
+       (cg-font 32 "helvetica")
+       ;; set up layers
        (setf *screen* (*layer "world" 0 0 *scr-width* *scr-height*))
-       (layer-add-sublayer *screen* (*layer "test" 10 10 10 10))
-       ;;(deflayer :name "aoeuaoeu")
+
+       (var left (*layer "test" 5 10 5 5))
+       (setf (@ left fill-style) "red")
+       (layer-add-sublayer *screen* left)
+
+       (var right (*layer "test" 20 10 5 5))
+       (setf (@ right fill-style) "green")
+       (layer-add-sublayer *screen* right)
+
        (clog *screen*)
 
-       (var player (*actor "Player" "@" 32 32))
-       (var monster (*actor "Monster" "M" 100 80))
+       ;; set up actors
+       (var player (*actor "Player" "@" 2 2))
+       (var monster (*actor "Monster" "M" 10 10))
        (setf *world* (create actors (array player monster)))
        (clog *world*)
 
        (redraw))
 
+     (defun actor-named (name)
+       (var found null)
+       (for-each-actor (lambda (a)
+                         (if (= (@ a name) name)
+                             (setf found a)
+                             )))
+       found)
+
      (defun game-turn (angle)
        (clogf "take a turn, angle: " angle)
+       (actor-move (actor-named "Player") angle)
        (redraw))
 
      (chain ($ document) (ready start-game))

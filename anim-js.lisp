@@ -34,7 +34,10 @@
 
      (defun layer-add-sublayer (l s)
        ;; does not check if layer is already present.
-       (append (@ l sublayers) (list s)))
+       (clog s)
+       ;;(append (@ l sublayers) (list s))
+       ((chain (@ l sublayers) push) s)
+       )
 
      (defun layer-render (l)
        (with-slots (fill-style stroke-style bounds sublayers) l
@@ -42,7 +45,7 @@
            (setprop *ctx* fill-style fill-style)
            (setprop *ctx* stroke-style stroke-style)
            (fill-rect bounds)
-           (for-in (s sublayers) (layer-render s)))))
+           (for-each sublayers layer-render))))
      
      ))
 

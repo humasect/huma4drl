@@ -1,5 +1,7 @@
 (in-package :gamelike)
 
+(defvar *act-move-amt* 1)    ;; 32
+
 (defmacro actor-js ()
   `(progn
 
@@ -9,10 +11,17 @@
                char char))
 
      (defun actor-render (a)
-       (clog a)
        (with-slots (char pos) a
          (cg-fill-style "yellow")
-         ((@ *ctx* fill-text) char (point-x pos) (point-y pos))))
+         ((@ *ctx* fill-text) char (point-scr-x pos) (point-scr-y pos))))
+
+     (defun actor-move (a angle)
+       (let* ((by (point-rotate (point-make 0 -1) (deg-to-rad angle)))
+              (to (point-add (@ a pos) (point-snap by 1))))
+         (setf (@ a pos) to)
+         ;;(clogf "position = " to)
+         ))
+
      ))
 
 (defun output-actor ()

@@ -3,17 +3,23 @@
 (defmacro apply-point (p f)
   `(,f (@ ,p x) (@ ,p y)))
 
+(defpsmacro point-make (x y) `(create x ,x y ,y))
 (defpsmacro point-x (p) `(@ ,p x))
 (defpsmacro point-y (p) `(@ ,p y))
+(defpsmacro point-scr-x (p) `(* (@ ,p x) *tile-width*))
+(defpsmacro point-scr-y (p) `(* (@ ,p y) *tile-height*))
 
 (defmacro geom-js ()
   `(progn
+     ;; misc
+     (defun deg-to-rad (c)
+       (/ (* c pi) 180.0))
+     (defun rad-to-deg (c)
+       (/ (* c 180.0) pi))
+
      ;;
      ;; point
      ;;
-     (defun point-make (x y)
-       (create x x y y))
-
      (defun point-makef (x y fun)
        (create x (fun x) y (fun y)))
 
@@ -45,8 +51,8 @@
                y (- (@ a y) (@ b y))))
 
      (defun point-scale (p s)
-       (create x (* (@ p x) s)
-               y (* (@ p y) s)))
+       (point-make (* (@ p x) s)
+                   (* (@ p y) s)))
 
      (defun point-normal (p)
        (var m (point-magnitude p))
@@ -56,13 +62,18 @@
 
      (defun point-rotate (p te)
        (let ((ct (cos te))
-             (st (sit te)))
+             (st (sin te)))
          (create x (- (* ct (@ p x)) (* st (@ p y)))
                  y (+ (* st (@ p x)) (* ct (@ p y))))))
 
      (defun point-angle-between (first second)
        (let ((diff (point-subtract second first)))
          (atan2 (@ diff x) (@ diff y))))
+
+     (defun point-snap (p sz)
+       (with-slots (x y) p
+         (point-make (* (round (/ x sz)) sz)
+                     (* (round (/ y sz)) sz))))
 
      ;;
      ;; size

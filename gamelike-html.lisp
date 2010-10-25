@@ -26,9 +26,7 @@
 
             (:canvas :id "canvas"
                      :width (* *tile-width* *scr-width*)
-                     :height (* *tile-height* *scr-height*))
-
-            (:div :id "view")))))
+                     :height (* *tile-height* *scr-height*)))))
 
 (defun output-index ()
   (output-file "gamelike.html" #'index-html))
