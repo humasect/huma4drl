@@ -1,60 +1,22 @@
 (in-package :gamelike)
 
-(defpsmacro defproto (class name &body body)
-  `(setf (@ ,class prototype ,name) ,@body))
-
-(defpsmacro setprop (object key value)
-  `(setf (@ ,object ,key) ,value))
-
-(defpsmacro setthis (key value)
-  `(setf (@ this ,key) ,value))
-
-;; (defpsmacro modprop (object key setter)
-;;   `(let ((value (funcall setter (@ object key))))
-;;      (setf (@ ,object ,key) ,value)))
-
-(defpsmacro for-each (x f)
-  `(let ((__array ,x))
-     (for-in (i __array) (,f (getprop __array i)))))
-
 (defpsmacro for-each-actor (f)
-  `(for-in (i (@ *world* actors)) (,f (getprop (@ *world* actors) i))))
-
-(defpsmacro clog (fmt)
-  `((@ console log) ,fmt))
-
-(defpsmacro clogf (fmt &rest args)
-  `((@ console log) (concatenate 'string ,fmt ,@args)))
+  `(for-each (@ *world* actors) ,f))
 
 (defmacro main-js ()
   `(progn
-     (var *tile-size* (size-make ,*tile-width* ,*tile-height*))
-     (var *screen-size* (size-make ,*scr-width* ,*scr-height*))
+     (var *tile-width* ,*tile-width*)
+     (var *tile-height* ,*tile-height*)
+     (var *screen-width* ,*screen-width*)
+     (var *screen-height* ,*screen-height*)
+
      (var *ctx* null)
      (var *screen* null)
      (var *world* null)
 
-     (var *tile-width* ,*tile-width*)
-     (var *tile-height* ,*tile-height*)
-     (var *scr-width* ,*scr-width*)
-     (var *scr-height* ,*scr-height*)
-
-     (defun mod-x (x) (* x *tile-width*))
-     (defun mod-y (y) (* y *tile-height*))
-
-     (defun fill-style (style)
-       (setf (@ *ctx* fill-style) style))
-
-     (defun fill-rect (r)
-       (let ((x (@ r origin x))
-             (y (@ r origin y))
-             (w (@ r size width))
-             (h (@ r size height)))
-         ((@ *ctx* fill-rect) (mod-x x) (mod-y y) (mod-x w) (mod-y h))))
-
      (defun clear ()
-       (fill-style "rgb(0,0,0)")
-       (fill-rect (rect-make 0 0 *scr-width* *scr-height*)))
+       (cg-fill-style "rgb(0,0,0)")
+       (cg-fill-rect (@ *screen* bounds)))
 
      (defun redraw ()
        (clear)
@@ -66,16 +28,24 @@
 
        (cg-font 32 "helvetica")
        ;; set up layers
-       (setf *screen* (*layer "world" 0 0 *scr-width* *scr-height*))
+       ;;(setf *screen* (*layer "world"))
+       ;;(set-bounds *screen* 
+       (setf *screen*
+             (new-layer :name "World"
+                        :bounds (rect-make 0 0
+                                           ,*screen-width*
+                                           ,*screen-height*)))
 
-       (var left (*layer "test" 5 10 5 5))
-       (setf (@ left fill-style) "red")
-       (layer-add-sublayer *screen* left)
+       (layer-add-sublayer *screen*
+        (new-layer :name "test-left"
+                   :fill-style "red"
+                   :bounds (rect-make 5 10 5 5)))
 
-       (var right (*layer "test" 20 10 5 5))
-       (setf (@ right fill-style) "green")
-       (layer-add-sublayer *screen* right)
-
+       (layer-add-sublayer *screen*
+        (new-layer :name "test-right"
+                   :fill-style "green"
+                   :bounds (rect-make 20 10 5 5)))
+       
        (clog *screen*)
 
        ;; set up actors
@@ -95,7 +65,7 @@
        found)
 
      (defun game-turn (angle)
-       (clogf "take a turn, angle: " angle)
+       ;;(clogf "take a turn, angle: " angle)
        (actor-move (actor-named "Player") angle)
        (redraw))
 

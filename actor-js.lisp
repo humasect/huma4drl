@@ -18,7 +18,7 @@
      (defun actor-move (a angle)
        (let* ((by (point-rotate (point-make 0 -1) (deg-to-rad angle)))
               (to (point-add (@ a pos) (point-snap by 1))))
-         (setf (@ a pos) to)
+         (setf (@ a pos) (keep-point-in-rect to (@ *screen* bounds)))
          ;;(clogf "position = " to)
          ))
 

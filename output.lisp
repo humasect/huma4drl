@@ -39,3 +39,24 @@
   (output-actor)
   (output-map))
 
+
+;; some utility stuff
+
+(defpsmacro clog (fmt)
+  `((@ console log) ,fmt))
+
+(defpsmacro clogf (fmt &rest args)
+  `((@ console log) (concatenate 'string ,fmt ,@args)))
+
+(defpsmacro defproto (class name &body body)
+  `(setf (@ ,class prototype ,name) ,@body))
+
+(defpsmacro setprop (object key value)
+  `(setf (@ ,object ,key) ,value))
+
+(defpsmacro setthis (key value)
+  `(setf (@ this ,key) ,value))
+
+(defpsmacro for-each (x f)
+  `(for-in (i ,x) (,f (getprop ,x i))))
+

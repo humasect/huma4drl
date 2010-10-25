@@ -1,3 +1,19 @@
+;; try to help layer making
+
+(defpsmacro deflayer (&key (name "")
+                           (sublayers nil)
+                           (fill-style "blue")
+                           (stroke-style "white")
+                           (bounds nil))
+  `(create superlayer null
+           name (if (,name) ,name null)
+           sublayers (if (,sublayers) ,sublayers null)
+           bounds (if (,bounds) ,bounds (rect-make 0 0 0 0))
+           fill-style ,fill-style
+           stroke-style ,stroke-style))
+
+;; jquery main
+
 (defmacro main-js-query ()
   `(progn
      (var *tile-width* 24)

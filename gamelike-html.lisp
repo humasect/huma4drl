@@ -2,8 +2,8 @@
 
 (defvar *tile-width* 32)
 (defvar *tile-height* 32)
-(defvar *scr-width* 32)
-(defvar *scr-height* 24)
+(defvar *screen-width* 32)
+(defvar *screen-height* 24)
 
 (defun index-html (stream)
   (cl-who:with-html-output (stream nil :indent t)
