@@ -1,5 +1,8 @@
-function pointMake(x, y) {
-    return { x : x, y : y };
+function degToRad(c) {
+    return (c * Math.PI) / 180.0;
+};
+function radToDeg(c) {
+    return (c * 180.0) / Math.PI;
 };
 function pointMakef(x, y, fun) {
     return { x : fun(x), y : fun(y) };
@@ -38,18 +41,21 @@ function pointNormal(p) {
 };
 function pointRotate(p, te) {
     var ct = Math.cos(te);
-    var st = sit(te);
+    var st = Math.sin(te);
     return { x : ct * p.x - st * p.y, y : st * p.x + ct * p.y };
 };
 function pointAngleBetween(first, second) {
     var diff = pointSubtract(second, first);
     return atan2(diff.x, diff.y);
 };
+function pointSnap(p, sz) {
+    return { x : Math.round(p.x / sz) * sz, y : Math.round(p.y / sz) * sz };
+};
 function sizeMake(w, h) {
     return { width : w, height : h };
 };
 function rectMake(x, y, w, h) {
-    return { origin : pointMake(x, y), size : sizeMake(w, h) };
+    return { origin : { x : x, y : y }, size : sizeMake(w, h) };
 };
 function rectMinX(r) {
     return r.origin.x;
@@ -73,6 +79,6 @@ function randomPointInRect(x, y, w, h) {
     return { x : randomInRange(x, x + w), y : randomInRange(y, y + w) };
 };
 function randomPointInCircle(x, y, radius) {
-    var p = pointNormal(pointMake(randomSigned(), randomSigned()));
-    return pointAdd(pointScale(p, radius), pointMake(x, y));
+    var p = pointNormal({ x : randomSigned(), y : randomSigned() });
+    return pointAdd(pointScale(p, radius), { x : x, y : y });
 };
