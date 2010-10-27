@@ -24,5 +24,4 @@
 
      ))
 
-(defun output-actor ()
-  (output-js "actor" '(actor-js)))
+

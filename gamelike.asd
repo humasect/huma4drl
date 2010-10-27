@@ -9,9 +9,8 @@
   :license "General Public License (GPL) Version 3"
   :description "humasect's 4-Day Roguelike"
   :serial t
-  :depends-on (:cl-who :parenscript)
-  :components ((:file "output")
-               (:file "gamelike-html")
+  :depends-on (:cl-who :parenscript :humaweb)
+  :components ((:file "gamelike")
                (:file "main-js")
-               (:file "geom-js")
-               (:file "anim-js")))
+               (:file "actor-js")
+               (:file "map-js")))

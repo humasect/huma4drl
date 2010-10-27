@@ -1,3 +1,9 @@
+(defpackage :gamelike
+  (:documentation "humasect 4-day roguelike")
+  (:nicknames :gl)
+  (:use :common-lisp :cl-who :parenscript :humaweb)
+  (:export output-all))
+
 (in-package :gamelike)
 
 (defvar *tile-width* 32)
@@ -5,7 +11,12 @@
 (defvar *screen-width* 32)
 (defvar *screen-height* 24)
 
-(defun index-html (stream)
+(defun output-all ()
+  (output-project :dir "../huma4drl_gh-pages"
+                  :html '("gamelike")
+                  :js '("main" "actor" "map")))
+
+(defun gamelike-html (stream)
   (cl-who:with-html-output (stream nil :indent t)
   ;;(with-html-output-to-string (s)
     (:html :manifest "cache.manifest"
@@ -25,15 +36,15 @@
             (:h2 "humasect 4drl")
 
             (:canvas :id "canvas"
-                     :width (* *tile-width* *scr-width*)
-                     :height (* *tile-height* *scr-height*)))))
+                     :width *screen-width*
+                     :height *screen-height*)))))
 
-(defun output-index ()
-  (output-file "gamelike.html" #'index-html))
+(defpsmacro point-to-screen (p x y)
+  `(point-make (* (.x ,p) ,x) (* (.y ,p) ,y)))
 
-;; (defun serve ()
-;;   (hunchentoot:define-easy-handler (serve-game :uri "/") ()
-;;     (setf (hunchentoot:content-type*) "text/plain")
-;;     (index-html))
-;;   (hunchentoot:start (make-instance 'hunchentoot:acceptor :port 9090)))
-
+(defpsmacro rect-to-screen (r x y)
+  `(rect-make
+    (* (rect-x ,r) ,x)
+    (* (rect-y ,r) ,y)
+    (* (rect-width ,r) ,x)
+    (* (rect-height ,r) ,y)))
