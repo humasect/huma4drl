@@ -5,7 +5,7 @@ function layerAddSublayer(l, s) {
 function layerRender(l) {
     CTX.fillStyle = l.fillStyle;
     CTX.strokeStyle = l.strokeStyle;
-    CTX.fillRect(l.bounds.origin.x * TILEWIDTH, l.bounds.origin.y * TILEHEIGHT, l.bounds.size.width * TILEWIDTH, l.bounds.size.height * TILEHEIGHT);
+    CTX.fillRect(l.bounds.origin.x, l.bounds.origin.y, l.bounds.size.width, l.bounds.size.height);
     for (var i in l.sublayers) {
         layerRender(l.sublayers[i]);
     };
