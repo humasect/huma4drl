@@ -4,9 +4,6 @@ function degToRad(c) {
 function radToDeg(c) {
     return (c * 180.0) / Math.PI;
 };
-function pointMod(p, fun) {
-    return { x : fun(p.x), y : fun(p.y) };
-};
 function pointModWith(p, fun) {
     return { x : fun(a.x, b.x), y : fun(a.y, b.y) };
 };
@@ -24,9 +21,6 @@ function pointAdd(a, b) {
 };
 function pointSubtract(a, b) {
     return { x : a.x - b.x, y : a.y - b.y };
-};
-function pointScale(p, s) {
-    return { x : p.x * s, y : p.y * s };
 };
 function pointNormal(p) {
     var m = pointMagnitude(p);
@@ -59,8 +53,10 @@ function randomPointInRect(x, y, w, h) {
 };
 function randomPointInCircle(x, y, radius) {
     var p = pointNormal({ x : randomSigned(), y : randomSigned() });
-    return pointAdd(pointScale(p, radius), { x : x, y : y });
+    return pointAdd({ x : p.x * radius, y : p.y * radius }, { x : x, y : y });
 };
 function keepPointInRect(p, r) {
+    console.log(p);
+    console.log(r);
     return { x : p.x < r.origin.x ? r.origin.x : (p.x > r.origin.x + r.size.width ? r.origin.x + r.size.width : p.x), y : p.y < r.origin.y ? r.origin.y : (p.y > r.origin.y + r.size.height ? r.origin.y + r.size.height : p.y) };
 };

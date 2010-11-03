@@ -1,33 +1,27 @@
-var TILEWIDTH = 32;
-var TILEHEIGHT = 32;
-var WORLD = null;
-function startMain() {
-    layerAddSublayer(SCREEN, newLayer('name', 'test-left', 'fill-style', 'red', 'bounds', rectMake(5, 10, 5, 5)));
-    layerAddSublayer(SCREEN, newLayer('name', 'test-right', 'fill-style', 'green', 'bounds', rectMake(20, 10, 5, 5)));
-    console.log(SCREEN);
-    SCREEN.fillStyle = 'blue';
-    layerRender(SCREEN);
-    var player = Actor('Player', '@', 2, 2);
-    var monster = Actor('Monster', 'M', 10, 10);
-    WORLD = { actors : [player, monster] };
-    console.log(WORLD);
-    for (var i in WORLD.actors) {
-        actorRender(WORLD.actors[i]);
-    };
+var PIECES = null;
+var ACTORS = null;
+function redraw() {
+    return layerRender(SCREEN);
 };
-function actorNamed(name) {
-    var found = null;
-    for (var i in WORLD.actors) {
-        (function (a) {
-            if (a.name == name) {
-                return found = a;
-            };
-        })(WORLD.actors[i]);
+function startMain() {
+    PIECES = { name : '*pieces*', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 0, y : 0 }, size : { width : 1, height : 1 } }, fillStyle : 'black', strokeStyle : 'white', contents : 'empty', render : null };
+    layerAddSublayer(SCREEN, PIECES);
+    for (var __i in [{ name : 'test-left', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 5, y : 10 }, size : { width : 5, height : 5 } }, fillStyle : 'red', strokeStyle : 'white', contents : null, render : null }, { name : 'test-right', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 20, y : 10 }, size : { width : 5, height : 5 } }, fillStyle : 'green', strokeStyle : 'white', contents : null, render : null }]) {
+        var s = [{ name : 'test-left', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 5, y : 10 }, size : { width : 5, height : 5 } }, fillStyle : 'red', strokeStyle : 'white', contents : null, render : null }, { name : 'test-right', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 20, y : 10 }, size : { width : 5, height : 5 } }, fillStyle : 'green', strokeStyle : 'white', contents : null, render : null }][__i];
+        layerAddSublayer(PIECES, s);
     };
-    return found;
+    ACTORS = { name : '*actors*', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 0, y : 0 }, size : { width : 1, height : 1 } }, fillStyle : 'black', strokeStyle : 'white', contents : 'empty', render : null };
+    layerAddSublayer(SCREEN, ACTORS);
+    for (var __i in [{ name : 'Player', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 2, y : 2 }, size : { width : 1, height : 1 } }, fillStyle : 'yellow', strokeStyle : 'white', contents : '@', render : null }, { name : 'Monster', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 10, y : 10 }, size : { width : 1, height : 1 } }, fillStyle : 'yellow', strokeStyle : 'white', contents : 'M', render : null }]) {
+        var s = [{ name : 'Player', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 2, y : 2 }, size : { width : 1, height : 1 } }, fillStyle : 'yellow', strokeStyle : 'white', contents : '@', render : null }, { name : 'Monster', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 10, y : 10 }, size : { width : 1, height : 1 } }, fillStyle : 'yellow', strokeStyle : 'white', contents : 'M', render : null }][__i];
+        layerAddSublayer(ACTORS, s);
+    };
+    SCREEN.fillStyle = 'blue';
+    console.log(SCREEN);
+    return redraw();
 };
 function gameTurn(angle) {
-    actorMove(actorNamed('Player'), angle);
+    actorMove(sublayerNamed(ACTORS, 'Player'), angle);
     return redraw();
 };
 document.onkeydown = function (e) {
