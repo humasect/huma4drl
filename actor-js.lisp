@@ -1,27 +1,24 @@
 (in-package :gamelike)
 
-(defvar *act-move-amt* 1)    ;; 32
+;(defvar *act-move-amt* 1)    ;; 32
 
-(defmacro actor-js ()
-  `(progn
+(defpsmacro new-actor (name char x y)
+  `(new-layer :name ,name
+              :bounds (rect-make ,x ,y 1 1)
+              :contents ,char
+              :fill-style "yellow"))
 
-     (defun *actor (name char x y)
-       (create name name
-               pos (point-make x y)
-               char char))
+(defun actor-js (stream)
+  (ps-to-stream* stream
+    `(progn
 
-     (defun actor-render (a)
-       (with-slots (char pos) a
-         (cg-fill-style "yellow")
-         ((@ *ctx* fill-text) char (point-scr-x pos) (point-scr-y pos))))
+      (defun actor-move (a angle)
+        (let* ((by (point-rotate (point-make 0 -1) (deg-to-rad angle)))
+               (to (point-add (layer-origin a) (point-snap by 1))))
+          ;(setprop a bounds (rect-make (.x up) (.y up) 1 1))
+          (setf (layer-origin a) (keep-point-in-rect to (@ *screen* bounds)))
+          ))
 
-     (defun actor-move (a angle)
-       (let* ((by (point-rotate (point-make 0 -1) (deg-to-rad angle)))
-              (to (point-add (@ a pos) (point-snap by 1))))
-         (setf (@ a pos) (keep-point-in-rect to (@ *screen* bounds)))
-         ;;(clogf "position = " to)
-         ))
-
-     ))
+      )))
 
 

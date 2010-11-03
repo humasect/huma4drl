@@ -6,12 +6,11 @@
 
 (in-package :gamelike)
 
-(defvar *tile-width* 32)
-(defvar *tile-height* 32)
 (defvar *screen-width* 32)
 (defvar *screen-height* 24)
+(setf humaweb:*layer-scale* 32)
 
-(defun output-all ()
+(defun output ()
   (output-project :dir "../huma4drl_gh-pages"
                   :html '("gamelike")
                   :js '("main" "actor" "map")))
@@ -28,16 +27,20 @@
                   (:script :src "jquery-1.4.2.min.js")
                   ;;(:script :src "functional.min.js")
                   (:script :src "underscore-1.1.0.min.js")
+
                   (:script :src "geom.js")
+                  (:script :src "graph.js")
                   (:script :src "anim.js")
+
                   (:script :src "actor.js")
+                  (:script :src "map.js")
                   (:script :src "main.js"))
            (:body
             (:h2 "humasect 4drl")
 
-            (:canvas :id "canvas"
-                     :width *screen-width*
-                     :height *screen-height*)))))
+            (:canvas :id "screen-canvas"
+                     :width (* *screen-width* *layer-scale*)
+                     :height (* *screen-height* *layer-scale*))))))
 
 (defpsmacro point-to-screen (p x y)
   `(point-make (* (.x ,p) ,x) (* (.y ,p) ,y)))

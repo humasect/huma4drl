@@ -1,8 +1,8 @@
 (in-package :gamelike)
 
-(defmacro map-js ()
-  `(progn
-     ))
+(defun map-js (stream)
+  (ps-to-stream* stream
+    `(progn
+      )))
 
-(defun output-map ()
-  (output-js "map" '(map-js)))
+
