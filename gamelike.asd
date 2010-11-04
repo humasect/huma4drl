@@ -6,11 +6,10 @@
   :version "1.0"
   :maintainer "Lyndon Tremblay"
   :author "Lyndon Tremblay"
-  :license "General Public License (GPL) Version 3"
+;  :license "General Public License (GPL) Version 3"
   :description "humasect's 4-Day Roguelike"
   :serial t
   :depends-on (:cl-who :parenscript :humaweb)
   :components ((:file "gamelike")
-               (:file "main-js")
                (:file "actor-js")
                (:file "map-js")))
