@@ -4,9 +4,6 @@ function degToRad(c) {
 function radToDeg(c) {
     return (c * 180.0) / Math.PI;
 };
-function pointModWith(p, fun) {
-    return { x : fun(a.x, b.x), y : fun(a.y, b.y) };
-};
 function pointDot(a, b) {
     return a.x * b.y + a.y * b.y;
 };
@@ -35,7 +32,7 @@ function pointRotate(p, te) {
     var st = Math.sin(te);
     return { x : ct * p.x - st * p.y, y : st * p.x + ct * p.y };
 };
-function pointAngleBetween(first, second) {
+function angleBetweenPoints(first, second) {
     var diff = pointSubtract(second, first);
     return atan2(diff.x, diff.y);
 };
@@ -48,15 +45,16 @@ function randomSigned() {
 function randomInRange(min, max) {
     return min + randam() * (max - min);
 };
-function randomPointInRect(x, y, w, h) {
-    return { x : randomInRange(x, x + w), y : randomInRange(y, y + w) };
+function randomPointInRect(r) {
+    return { x : randomInRange(r.origin.x, r.origin.x + r.size.width), y : randomInRange(r.origin.y, r.origin.y + r.size.height) };
 };
-function randomPointInCircle(x, y, radius) {
+function randomPointInCircle(c) {
     var p = pointNormal({ x : randomSigned(), y : randomSigned() });
-    return pointAdd({ x : p.x * radius, y : p.y * radius }, { x : x, y : y });
+    return pointAdd({ x : p.x * c.radius, y : p.y * c.radius }, c.origin);
+};
+function randomArrayElement(arr) {
+    return arr.randomInRange(0, arr.length);
 };
 function keepPointInRect(p, r) {
-    console.log(p);
-    console.log(r);
-    return { x : p.x < r.origin.x ? r.origin.x : (p.x > r.origin.x + r.size.width ? r.origin.x + r.size.width : p.x), y : p.y < r.origin.y ? r.origin.y : (p.y > r.origin.y + r.size.height ? r.origin.y + r.size.height : p.y) };
+    return { x : p.x < r.origin.x ? r.origin.x : (p.x >= r.origin.x + r.size.width ? r.origin.x + r.size.width : p.x), y : p.y < r.origin.y ? r.origin.y : (p.y >= r.origin.y + r.size.height ? r.origin.y + r.size.height : p.y) };
 };
