@@ -1,4 +1,4 @@
-(in-package :gamelike)
+(in-package :huma4drl)
 
 ;(defvar *act-move-amt* 1)    ;; 32
 

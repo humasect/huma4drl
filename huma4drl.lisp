@@ -1,25 +1,27 @@
-(defpackage :gamelike
+(defpackage :huma4drl
   (:documentation "humasect 4-day roguelike")
   (:nicknames :gl)
   (:use :common-lisp :cl-who :parenscript :humaweb)
   (:export output))
 
-(in-package :gamelike)
+(in-package :huma4drl)
+
+(defparameter *js-files* '("actor" "map" "game"))
 
 (defun output ()
   (output-project :dir "../huma4drl_gh-pages"
                   :width 32
                   :height 24
                   :scale 32
-                  :html '("gamelike")
-                  :js '("gamelike" "actor" "map")))
+                  :html '("play")
+                  :js *js-files*))
 
 
-(defun gamelike-html (stream)
+(defun play-html (stream)
   (html-to-stream :stream stream
                   :title "humasect 4drl"
                   :styles '("style")
-                  :scripts '("actor" "map" "gamelike")
+                  :scripts *js-files*
                   :body (htm
                           (:h2 "humasect 4drl")
                           (:canvas
@@ -28,7 +30,7 @@
                            :height (* *screen-height* *layer-scale*)))))
 
 
-(defun gamelike-js (stream)
+(defun game-js (stream)
   (ps-to-stream* stream
     `(progn
        (var *pieces* nil)
