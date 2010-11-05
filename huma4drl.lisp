@@ -8,8 +8,8 @@
 
 (defparameter *js-files* '("actor" "map" "game"))
 
-(defun output ()
-  (output-project :dir "../huma4drl_gh-pages"
+(defun output (&key (dir "../huma4drl_gh-pages"))
+  (output-project :dir dir
                   :width 32
                   :height 24
                   :scale 32
