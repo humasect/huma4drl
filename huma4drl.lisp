@@ -16,8 +16,8 @@
                   :scale 32
                   :html '("play")
                   :js *js-files*
-                  :css *css-files*))
-
+                  ; :css *css-files*
+                  ))
 
 (define-htmloutput play
     :title "humasect 4drl"
@@ -40,23 +40,23 @@
 
   (defun start-main ()
     ;; set up temp level pieces
-    (setf *pieces* (new-layer :name "*pieces*" :contents 'empty))
+    (setf *pieces* (layer-new :name "*pieces*" :contents 'empty))
     (layer-add-sublayer *screen* *pieces*)
     (layer-add-sublayers *pieces*
-                         (list (new-layer
+                         (list (layer-new
                                 :name "test-left"
                                 :fill-style "red"
                                 :bounds (rect-make 5 10 5 5))
-                               (new-layer
+                               (layer-new
                                 :name "test-right"
                                 :fill-style "green"
                                 :bounds (rect-make 20 10 5 5))))
     
     ;; set up actors
-    (setf *actors* (new-layer :name "*actors*" :contents 'empty))
+    (setf *actors* (layer-new :name "*actors*" :contents 'empty))
     (layer-add-sublayer *screen* *actors*)
-    (layer-add-sublayers *actors* (list (new-actor "Player" "@" 2 2)
-                                        (new-actor "Monster" "M" 10 10)))
+    (layer-add-sublayers *actors* (list (actor-new "Player" "@" 2 2)
+                                        (actor-new "Monster" "M" 10 10)))
 
     (setprop *screen* fill-style "blue")
     (clog *screen*)
