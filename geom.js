@@ -5,7 +5,7 @@ function radToDeg(c) {
     return (c * 180.0) / Math.PI;
 };
 function pointDot(a, b) {
-    return a.x * b.y + a.y * b.y;
+    return a.x * b.x + a.y * b.y;
 };
 function pointMagnitude(p) {
     return Math.sqrt(pointDot(p, p));

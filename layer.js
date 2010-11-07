@@ -19,11 +19,11 @@ function layerRender(l) {
         if (l.render) {
             l.render();
         } else {
-            var bounds2 = { origin : { x : l.bounds.origin.x * 32, y : l.bounds.origin.y * 32 }, size : { width : l.bounds.size.width * 32, height : l.bounds.size.height * 32 } };
+            var bounds1 = { origin : { x : l.bounds.origin.x * 32, y : l.bounds.origin.y * 32 }, size : { width : l.bounds.size.width * 32, height : l.bounds.size.height * 32 } };
             if (typeof l.contents == 'string') {
-                CTX.fillText(l.contents, bounds2.origin.x, bounds2.origin.y);
+                CTX.fillText(l.contents, bounds1.origin.x, bounds1.origin.y);
             } else {
-                CTX.fillRect(bounds2.origin.x, bounds2.origin.y, bounds2.size.width, bounds2.size.height);
+                CTX.fillRect(bounds1.origin.x, bounds1.origin.y, bounds1.size.width, bounds1.size.height);
             };
         };
     };

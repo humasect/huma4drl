@@ -12,8 +12,8 @@ function startMain() {
     };
     ACTORS = { name : '*actors*', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 0, y : 0 }, size : { width : 1, height : 1 } }, fillStyle : 'black', strokeStyle : 'white', contents : 'empty', render : null, animations : [] };
     layerAddSublayer(SCREEN, ACTORS);
-    for (var __i in [newLayer('name', 'Player', 'bounds', { origin : { x : 2, y : 2 }, size : { width : 1, height : 1 } }, 'contents', '@', 'fill-style', 'yellow'), newLayer('name', 'Monster', 'bounds', { origin : { x : 10, y : 10 }, size : { width : 1, height : 1 } }, 'contents', 'M', 'fill-style', 'yellow')]) {
-        var s = [newLayer('name', 'Player', 'bounds', { origin : { x : 2, y : 2 }, size : { width : 1, height : 1 } }, 'contents', '@', 'fill-style', 'yellow'), newLayer('name', 'Monster', 'bounds', { origin : { x : 10, y : 10 }, size : { width : 1, height : 1 } }, 'contents', 'M', 'fill-style', 'yellow')][__i];
+    for (var __i in [{ name : 'Player', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 2, y : 2 }, size : { width : 1, height : 1 } }, fillStyle : 'yellow', strokeStyle : 'white', contents : '@', render : null, animations : [] }, { name : 'Monster', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 10, y : 10 }, size : { width : 1, height : 1 } }, fillStyle : 'yellow', strokeStyle : 'white', contents : 'M', render : null, animations : [] }]) {
+        var s = [{ name : 'Player', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 2, y : 2 }, size : { width : 1, height : 1 } }, fillStyle : 'yellow', strokeStyle : 'white', contents : '@', render : null, animations : [] }, { name : 'Monster', superlayer : null, sublayers : [], parent : null, bounds : { origin : { x : 10, y : 10 }, size : { width : 1, height : 1 } }, fillStyle : 'yellow', strokeStyle : 'white', contents : 'M', render : null, animations : [] }][__i];
         layerAddSublayer(ACTORS, s);
     };
     SCREEN.fillStyle = 'blue';
