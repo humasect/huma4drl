@@ -3,11 +3,11 @@
 ;(defvar *act-move-amt* 1)    ;; 32
 
 (define-psmacros actor
-  (new (name char x y)
-       `(new-layer :name ,name
-                   :bounds (rect-make ,x ,y 1 1)
-                   :contents ,char
-                   :fill-style "yellow")))
+  (make (name char x y)
+        `(layer-make :name ,name
+                     :bounds (rect-make ,x ,y 1 1)
+                     :contents ,char
+                     :fill-style "yellow")))
 
 (define-jsoutput actor
   (defun actor-move (a angle)
