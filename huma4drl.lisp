@@ -16,7 +16,7 @@
                   :scale 32
                   :html '("play")
                   :js *js-files*
-                  ; :css *css-files*
+                  :css *css-files*
                   ))
 
 (define-htmloutput play
@@ -30,6 +30,29 @@
             :width (* *screen-width* *layer-scale*)
             :height (* *screen-height* *layer-scale*))))
 
+(define-cssoutput style
+  (("html") (:background "rgb(0, 0, 0)"
+             :background-image "none"
+             :min-height "100%"))
+  (("body") (:-webkit-user-select "none"
+             :-moz-user-select "none"
+             :overflow "hidden"
+             :margin "0px"
+             :color "white"))
+
+  ((".tile") (:font-size "30px"
+              :position "absolute"
+              :width "24px"
+              :height "30px"
+              :text-align "left"
+
+              :vertical-align "text-bottom"
+              :margin 0
+              :padding 0))
+
+  ((".floor") (:background "blue"))
+  ((".wall") (:background "green"))
+  )
 
 (define-jsoutput game
   (var *pieces* nil)
