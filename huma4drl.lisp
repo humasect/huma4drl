@@ -16,8 +16,7 @@
                   :scale 32
                   :html '("play")
                   :js *js-files*
-                  :css *css-files*
-                  ))
+                  :css *css-files*))
 
 (define-htmloutput play
     :title "humasect 4drl"
